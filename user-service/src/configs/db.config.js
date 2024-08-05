@@ -11,7 +11,7 @@ const {
 } = config;
 
 mongoose.Promise = global.Promise;
-const MONGO_CONN_URL = `mongodb+srv://${db_username}:${db_password}@${db_host}.mongodb.net/?retryWrites=true&w=majority&appName=${db_name}`;
+const MONGO_CONN_URL = `mongodb+srv://${db_username}:${db_password}@${db_host}.mongodb.net/${db_name}?retryWrites=true&w=majority`;
 const RETRY_BASE_INTERVAL = 2000; // 2 seconds base interval for exponential backoff retry
 const MAX_RETRIES = 5; // Max number of retries for connection attempts
 
