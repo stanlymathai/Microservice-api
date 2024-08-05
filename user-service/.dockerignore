@@ -1,8 +1,0 @@
-# Exclude unnecessary files
-node_modules
-npm-debug.log
-.git
-*.log
-
-# exclude .env files
-*.env
