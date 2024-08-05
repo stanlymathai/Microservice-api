@@ -25,31 +25,11 @@ const userSchema = new mongoose.Schema(
         'Please enter a valid email',
       ],
     },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: [6, 'Password must be at least 6 characters long'],
-      // select: false,
-    },
     gender: {
       type: String,
       required: true,
       enum: ['male', 'female', 'non-binary', 'not-specified'],
     },
-    avatar: {
-      type: String,
-    },
-    secretOrKey: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    status: {
-      type: String,
-      required: true,
-      enum: ['ACTIVE', 'INACTIVE', 'BLOCKED', 'PENDING'],
-    },
-
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },
