@@ -1,3 +1,5 @@
+const { isValidObjectId } = require('mongoose');
+
 const userService = require('../services/user.service');
 const responseHandler = require('../handlers/response.handler');
 const ERROR_MESSAGES = require('../constants/errorMessage.constants');
@@ -37,8 +39,12 @@ async function createUser(req, res) {
 }
 
 // Controller to handle fetching a user by ID
-async function getUserById(req, res, userId) {
+async function getUserById(_, res, userId) {
   try {
+    if (!userId || !isValidObjectId(userId)) {
+      responseHandler.sendBadRequest(res, ERROR_MESSAGES.INVALID_USER_DATA);
+      return;
+    }
     const user = await userService.getUserById(userId);
     if (user) {
       responseHandler.sendSuccessResponse(res, user);
