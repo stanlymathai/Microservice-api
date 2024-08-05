@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: User Service API
+  version: 1.0.0
+  description: API for managing users
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  format: email
+                  example: john.doe@example.com
+                password:
+                  type: string
+                  example: mypassword123
+              required:
+                - name
+                - email
+                - password
+      responses:
+        201:
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 60f6aef9a6f7c2a123456789
+                  name:
+                    type: string
+                    example: John Doe
+                  email:
+                    type: string
+                    example: john.doe@example.com
+  /users/{id}:
+    get:
+      summary: Retrieve user details by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the user to retrieve
+      responses:
+        200:
+          description: User details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 60f6aef9a6f7c2a123456789
+                  name:
+                    type: string
+                    example: John Doe
+                  email:
+                    type: string
+                    example: john.doe@example.com
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
