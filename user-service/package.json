@@ -4,7 +4,8 @@
   "description": "User service in microservice arch.",
   "main": "./bin/www",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./bin/www",
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,9 @@
     "dotenv": "^16.4.5",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.2"
+  },
+  "devDependencies": {
+    "jasmine": "^5.2.0",
+    "jasmine-spec-reporter": "^7.0.0"
   }
 }

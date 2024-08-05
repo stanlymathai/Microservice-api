@@ -5,7 +5,11 @@
     "**/*[tT]est.?(m)js"
   ],
   "helpers": [
-    "helpers/**/*.?(m)js"
+    "helpers/**/*.?(m)js",
+    "support/jasmineSetup.js"
+  ],
+  "reporters": [
+    "spec-reporter"
   ],
   "env": {
     "stopSpecOnExpectationFailure": false,
