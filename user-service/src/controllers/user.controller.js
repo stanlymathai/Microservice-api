@@ -52,7 +52,7 @@ async function getUserById(_, res, userId) {
       responseHandler.sendBadRequest(res, ERROR_MESSAGES.USER_NOT_FOUND);
     }
   } catch (error) {
-    responseHandler.sendInternalServerError(res, ERROR_MESSAGES.USER_UPDATE_FAILED);
+    responseHandler.sendInternalServerError(res, ERROR_MESSAGES.USER_NOT_FOUND);
   }
 }
 
