@@ -7,6 +7,8 @@ const ERROR_MESSAGES = {
   USER_UPDATE_FAILED: 'Failed to update user',
   USER_DELETION_FAILED: 'Failed to delete user',
   UNAUTHORIZED_ACTION: 'Unauthorized action',
+  USER_FETCH_ERROR: 'Error fetching user data',
+  USER_CREATION_ERROR: 'Error creating user'
 };
 
 module.exports = ERROR_MESSAGES;
