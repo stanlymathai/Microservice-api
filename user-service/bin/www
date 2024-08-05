@@ -3,7 +3,6 @@
 const http = require('http');
 const app = require('../src/app');
 const config = require('../src/configs/env.config/app.env');
-
 const port = normalizePort(config.app_port || '8000');
 
 console.info('Starting server...');
