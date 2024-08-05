@@ -29,8 +29,13 @@ const server = http.createServer((req, res) => {
                             SwaggerUIBundle.presets.apis,
                             SwaggerUIStandalonePreset
                         ],
-                        layout: "StandaloneLayout"
-                    })
+                        layout: "StandaloneLayout",
+                        // Ensure the correct base URL for your API
+                        requestInterceptor: (req) => {
+                            req.url = req.url.replace('http://localhost:8001', 'http://localhost:8000');
+                            return req;
+                        }
+                    });
                 }
                 </script>
             </body>

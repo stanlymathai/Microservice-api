@@ -3,51 +3,19 @@ info:
   title: User Service API
   version: 1.0.0
   description: API for managing users
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Use the secure token as a security measure.'
 paths:
-  /users:
-    post:
-      summary: Create a new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: John Doe
-                email:
-                  type: string
-                  format: email
-                  example: john.doe@example.com
-                password:
-                  type: string
-                  example: mypassword123
-              required:
-                - name
-                - email
-                - password
-      responses:
-        201:
-          description: User created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    example: 60f6aef9a6f7c2a123456789
-                  name:
-                    type: string
-                    example: John Doe
-                  email:
-                    type: string
-                    example: john.doe@example.com
   /users/{id}:
     get:
       summary: Retrieve user details by ID
+      security:
+        - ApiKeyAuth: []
       parameters:
         - in: path
           name: id
@@ -63,15 +31,35 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                    example: 60f6aef9a6f7c2a123456789
-                  name:
-                    type: string
-                    example: John Doe
-                  email:
-                    type: string
-                    example: john.doe@example.com
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "66b132be26f982e8d80fea39"
+                      firstName:
+                        type: string
+                        example: "testDiana420"
+                      lastName:
+                        type: string
+                        example: "testSmith811"
+                      email:
+                        type: string
+                        example: "dianasmith811@example.com"
+                      gender:
+                        type: string
+                        example: "not-specified"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-08-05T20:14:54.922Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-08-05T20:14:54.922Z"
         404:
           description: User not found
           content:
@@ -79,6 +67,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
                     type: string
-                    example: User not found
+                    example: "User not found"
