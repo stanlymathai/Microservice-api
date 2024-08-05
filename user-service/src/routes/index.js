@@ -1,4 +1,5 @@
 const userRoutes = require('./user.route');
+const globalErrorHandler = require('../handlers/globalError.handler');
 
 module.exports = (req, res) => {
   const { method, url } = req;
@@ -10,6 +11,10 @@ module.exports = (req, res) => {
     return;
   }
 
-  // User routes
-  userRoutes(req, res);
+  try {
+    // User routes
+    userRoutes(req, res);
+  } catch (err) {
+    globalErrorHandler(err, req, res);
+  }
 };
