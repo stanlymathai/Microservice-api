@@ -20,9 +20,6 @@ async function establishConnection(attempt = 1) {
     await mongoose.connect(MONGO_CONN_URL, {
       connectTimeoutMS: db_connection_timeout,
       socketTimeoutMS: db_socket_timeout,
-
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
     });
     console.log('DB connection successful');
   } catch (err) {
