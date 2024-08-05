@@ -1,54 +1,59 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const swaggerUi = require('swagger-ui-dist');
-
-const SWAGGER_UI_PATH = swaggerUi.getAbsoluteFSPath();
-const SWAGGER_YAML_PATH = path.join(__dirname, '../utils/user-service-openapi.yml');
+const swaggerUiDist = require('swagger-ui-dist');
 
 const server = http.createServer((req, res) => {
     if (req.url === '/api-docs') {
         res.writeHead(200, { 'Content-Type': 'text/html' });
-        const indexHTML = fs.readFileSync(path.join(SWAGGER_UI_PATH, 'index.html'), 'utf8');
-        const updatedHTML = indexHTML.replace(
-            'https://petstore.swagger.io/v2/swagger.json',
-            '/swagger.yml'
-        );
-        res.end(updatedHTML);
-    } else if (req.url === '/swagger.yml') {
-        fs.readFile(SWAGGER_YAML_PATH, 'utf8', (err, data) => {
-            if (err) {
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Internal Server Error');
-                return;
-            }
-            res.writeHead(200, { 'Content-Type': 'application/x-yaml' });
-            res.end(data);
-        });
-    } else if (req.url.startsWith('/swagger-ui/')) {
-        const filePath = path.join(SWAGGER_UI_PATH, req.url.replace('/swagger-ui/', ''));
+        res.end(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Swagger UI</title>
+                <link rel="stylesheet" type="text/css" href="/swagger-ui.css" />
+                <link rel="stylesheet" type="text/css" href="/index.css" />
+            </head>
+            <body>
+                <div id="swagger-ui"></div>
+                <script src="/swagger-ui-bundle.js"> </script>
+                <script src="/swagger-ui-standalone-preset.js"> </script>
+                <script>
+                window.onload = function() {
+                    const ui = SwaggerUIBundle({
+                        url: '/swagger.yaml',
+                        dom_id: '#swagger-ui',
+                        presets: [
+                            SwaggerUIBundle.presets.apis,
+                            SwaggerUIStandalonePreset
+                        ],
+                        layout: "StandaloneLayout"
+                    })
+                }
+                </script>
+            </body>
+            </html>
+        `);
+    } else if (req.url === '/swagger.yaml') {
+        res.writeHead(200, { 'Content-Type': 'application/x-yaml' });
+        res.end(fs.readFileSync(path.join(__dirname, '../utils/user-service-openapi.yml')));
+    } else {
+        // Serve static files from swagger-ui-dist
+        const filePath = path.join(swaggerUiDist.getAbsoluteFSPath(), req.url);
         fs.readFile(filePath, (err, data) => {
             if (err) {
                 res.writeHead(404, { 'Content-Type': 'text/plain' });
                 res.end('Not Found');
-                return;
+            } else {
+                let contentType = 'text/plain';
+                if (req.url.endsWith('.css')) contentType = 'text/css';
+                if (req.url.endsWith('.js')) contentType = 'application/javascript';
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(data);
             }
-            const ext = path.extname(filePath).substring(1);
-            const mimeType = {
-                'html': 'text/html',
-                'js': 'application/javascript',
-                'css': 'text/css',
-                'png': 'image/png',
-                'json': 'application/json',
-                'yaml': 'application/x-yaml',
-                'yml': 'application/x-yaml'
-            }[ext] || 'application/octet-stream';
-            res.writeHead(200, { 'Content-Type': mimeType });
-            res.end(data);
         });
-    } else {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('Not Found');
     }
 });
 
