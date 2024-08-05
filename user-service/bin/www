@@ -2,9 +2,17 @@
 
 const http = require('http');
 const app = require('../src/app');
-const config = require('../src/configs/env.config/app.env');
 
-const port = normalizePort(config.app_port || '8000');
+const config = require('../src/configs/env.config/app.env');
+const swaggerServer = require('../src/configs/swagger.config.js');
+
+const {
+  app_env,
+  app_port,
+  swagger_port,
+} = config;
+
+const port = normalizePort(app_port || '8000');
 
 console.info('Starting server...');
 
@@ -16,6 +24,16 @@ server.listen(port, () => {
 });
 
 server.on('error', onError);
+
+// Setup Swagger server for dev env.
+if (app_env == 'development') {
+  const swaggerPort = normalizePort(swagger_port || 8081)
+  swaggerServer.listen(swaggerPort, () => {
+    console.log(`Swagger server is listening on port ${swaggerPort}`);
+  });
+
+  swaggerServer.on('error', onError);
+}
 
 process.on('SIGTERM', shutdown); // On process termination request (e.g., from Docker/K8s)
 process.on('SIGINT', shutdown); // On Ctrl+C
