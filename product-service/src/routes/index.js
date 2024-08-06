@@ -5,7 +5,7 @@ module.exports = (req, res) => {
   const { method, url } = req;
 
   // Health check endpoint
-  if (url === '/health' && method === 'GET') {
+  if (url === '/hello' && method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Joy in every hello.');
     return;
