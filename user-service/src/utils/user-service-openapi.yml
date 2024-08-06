@@ -11,6 +11,92 @@ components:
       name: Authorization
       description: 'Use the secure token as a security measure.'
 paths:
+  /users:
+    post:
+      summary: Create a new user
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: John
+                lastName:
+                  type: string
+                  example: Doe
+                email:
+                  type: string
+                  format: email
+                  example: john.doe@example.com
+                gender:
+                  type: string
+                  enum: ['male', 'female', 'non-binary', 'not-specified']
+                  example: 'not-specified'
+              required:
+                - firstName
+                - lastName
+                - gender
+                - email
+      responses:
+        201:
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                  _id:
+                    type: string
+                    example: "66b126517c9da40aeb2a2fd9"
+                  firstName:
+                    type: string
+                    example: "John"
+                  lastName:
+                    type: string
+                    example: "Doe"
+                  email:
+                    type: string
+                    example: "john.doe@example.com"
+                  gender:
+                    type: string
+                    example: "non-binary"
+        400:
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Invalid input data"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Unauthorized"
   /users/{id}:
     get:
       summary: Retrieve user details by ID
